@@ -1,5 +1,6 @@
 var closestValue = require("./helpers").closestValue;
 var stateFor = require("./states-list").stateFor;
+var chalk = require('chalk');
 
 var currentMeasurement, currentMatchedState = 0, latestMatchedState;
 var sendState;
@@ -14,7 +15,7 @@ exports.receiveMeasurement = function(measurement) {
   currentMeasurement = measurement;
   latestMatchedState = stateFor(measurement);
 
-  console.log("Current measurement: " + measurement + "cm");
+  console.log("Distance mesurée: " + measurement + "cm");
 
   if(currentMatchedState.stateValue != latestMatchedState.stateValue) {
     switchToState(latestMatchedState);
@@ -25,7 +26,7 @@ var switchToState = function (newState) {
   if (!interruptStateChange) {
     interruptStateChange = true;
 
-    console.log("--------------------------------------------------------------------- \n" + "Switching to " + newState.name);
+    console.log("--------------------------------------------------------------------- \n" + "Changement d'état vers " + chalk.green(newState.name));
 
     currentMatchedState = newState;
     sendState(currentMatchedState.stateValue);

@@ -15,12 +15,12 @@ var measurableProperty = "weight";
 
 var valueAssociations = [
   {
-    name: "Whales",
+    name: "Test aquatique",
     stateValue: "1",
     weight: 4
   },
   {
-    name: "Chimps",
+    name: "Test zoo",
     stateValue: "0",
     weight: 18
   },
