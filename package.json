@@ -1,0 +1,19 @@
+{
+  "name": "mmx-cohabitation",
+  "version": "0.0.1",
+  "description": "Application pour le kiosque de l'équipe 4 du Muséomix 2016",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.10.2",
+    "johnny-five": "^0.10.3",
+    "socket.io": "^1.5.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "private": true
+}

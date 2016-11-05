@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Mets-moi en plein écran :)</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+
+      video#bgvid {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        z-index: -100;
+        -ms-transform: translateX(-50%) translateY(-50%);
+        -moz-transform: translateX(-50%) translateY(-50%);
+        -webkit-transform: translateX(-50%) translateY(-50%);
+        transform: translateX(-50%) translateY(-50%);
+        background: url(polina.jpg) no-repeat;
+        background-size: cover;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="video-container">
+      <video id="bgvid" playsinline autoplay muted loop>
+        <source src="/media/test-video.mp4" type="video/mp4">
+          <!-- WCAG general accessibility recommendation is that media such as background video play through only once. Loop turned on for the purposes of illustration; if removed, the end of the video will fade in the same way created by pressing the "Pause" button  -->
+      </video>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var videoElement = document.getElementById("bgvid");
+      var socket = io();
+      socket.on('state', function(state){
+        console.log("State received: " + state + "!");
+        videoElement.load();
+      });
+    </script>
+  </body>
+</html>
