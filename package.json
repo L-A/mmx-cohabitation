@@ -4,6 +4,7 @@
   "description": "Application pour le kiosque de l'équipe 4 du Muséomix 2016",
   "main": "index.js",
   "dependencies": {
+    "baconjs": "^0.7.88",
     "express": "^4.10.2",
     "johnny-five": "^0.10.3",
     "socket.io": "^1.5.1"

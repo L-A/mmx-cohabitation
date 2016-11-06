@@ -15,3 +15,8 @@ exports.closestValue = function (value, valueArray, property) {
   }
   return chosenIndex;
 }
+
+exports.average = function (array) {
+  var sum = array.reduce(function(a, b) { return a + b; }, 0);
+  return sum / array.length;
+}

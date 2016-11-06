@@ -14,16 +14,31 @@ var closestValue = require("./helpers").closestValue;
 var measurableProperty = "weight";
 
 var valueAssociations = [
+  // {
+  //   name: "Test aquatique",
+  //   stateValue: "1",
+  //   weight: 4
+  // },
+  // {
+  //   name: "Test zoo",
+  //   stateValue: "0",
+  //   weight: 24
+  // }
   {
-    name: "Test aquatique",
+    name: "Mortier",
     stateValue: "1",
-    weight: 4
+    weight: 8
   },
   {
-    name: "Test zoo",
+    name: "Crucifix",
     stateValue: "0",
-    weight: 18
+    weight: 8.6
   },
+  {
+    name: "Neutre",
+    stateValue: "2",
+    weight: 9.2
+  }
 ]
 
 exports.stateFor = function (measurement) {

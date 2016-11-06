@@ -15,7 +15,7 @@ exports.receiveMeasurement = function(measurement) {
   currentMeasurement = measurement;
   latestMatchedState = stateFor(measurement);
 
-  console.log("Distance mesurée: " + measurement + "cm");
+  //console.log("Distance mesurée: " + measurement + "cm");
 
   if(currentMatchedState.stateValue != latestMatchedState.stateValue) {
     switchToState(latestMatchedState);

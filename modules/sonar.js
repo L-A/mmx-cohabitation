@@ -1,13 +1,13 @@
 var five = require("johnny-five"), sensor;
+var Bacon = require("baconjs");
+var avg = require("./helpers").average;
 var sonar = {};
 
-var distanceA, distanceB;
 var changeReceiver;
 
 // Configs
 
-var pollFreq = 60;
-var distanceThreshold = 0.15;
+var pollFreq = 100;
 
 sonar.startBoard = function () {
   console.log("Setting up!");
@@ -34,20 +34,24 @@ sonar.startBoard = function () {
 };
 
 function onControllerChange(length) {
-  if (length >= 18) { return; } // Reject *all* events above 18cm
+  if (length >= 24) { return; } // Reject *all* events above 35cm
 
-  if (!distanceA) {distanceA = length} // Initial reading
-
-  else if (Math.abs(length - distanceA) >= distanceThreshold) {
-
-    // If the change is enough to register:
-    if (changeReceiver) {changeReceiver(length)};
-    distanceA = length;
+  else {
+    // Fingers crossed for a good rolling average
+    distanceBus.push(length);
   }
+}
+
+var sendChange = function (length) {
+  console.log(length);
+  if (changeReceiver) { changeReceiver(length); }
 }
 
 sonar.registerReceiver = function (receiverCall) {
   changeReceiver = receiverCall;
 }
+
+var distanceBus = new Bacon.Bus();
+distanceBus.slidingWindow(10).map(avg).onValue(function(value) { sendChange(value); });
 
 module.exports = sonar;
