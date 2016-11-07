@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Plein-écran plz</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+
+      a {
+        background-color: #EEE;
+        border-radius: 8px;
+        color: #444;
+        display:block;
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 24px;
+        font-weight: bold;
+        line-height: 8vh;
+        text-align: center;
+        text-decoration: none;
+        text-transform: uppercase;
+        margin: 4vh auto;
+        padding: 4vh 0;
+        letter-spacing: 1px;
+        width: 80vw;
+      }
+
+      a.active {
+        background-color: #404;
+        color: #FFF;
+      }
+
+      a.authorize { margin-top: 40vh; }
+
+      a.authorize p.yes { display:none; }
+      a.authorize p.no { display: block; }
+      a.authorize.active p.yes { display: block; }
+      a.authorize.active p.no { display: none; }
+
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body style="background-color: white;">
+    <a href="#" class="state-1">
+      Croix
+    </a>
+    <a href="#" class="state-2">
+      Mortier
+    </a>
+    <a href="#" class="state-3">
+      Exfoliants
+    </a>
+    <a href="#" class="stop" onclick="sendStop()">
+      X
+    </a>
+    <a href="#" class="authorize" onclick="toggleAuthorize()">
+      <p class="yes">
+        Balance activée
+      </p>
+      <p class="no">
+        Balance désactivée
+      </p>
+    </a>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      // Declarations
+      var socket = io(), domElementsMap = [];
+
+      // States list
+      var statesClassMap = [
+        ".state-1", ".state-2", ".state-3"
+      ];
+
+      // Helpers
+      function forEach (array, callback, scope) {
+        if (array) {
+          for (var i = 0; i < array.length; i++) {
+            callback.call(scope, i, array[i]);
+          }
+        }
+      }
+
+      // State management
+      var sendState = function (state) {
+        console.log(state);
+        socket.emit("setState", state);
+      }
+
+      var sendStop = function () {
+        socket.emit("setState", -1);
+      }
+
+      var toggleAuthorize = function () {
+        socket.emit("toggleAuthorize");
+      }
+
+      forEach(statesClassMap, function(index) {
+        domElementsMap[index] = document.querySelector(statesClassMap[index]);
+        domElementsMap[index].onclick = sendState.bind(this, index);
+        console.log(domElementsMap[index]);
+      });
+
+      var cleanAll = function () {
+        forEach (domElementsMap, function(index, elem) {
+          domElementsMap[index].classList.remove("active");
+        });
+        document.querySelector(".stop").classList.remove("active");
+      };
+
+      socket.on('state', function(state){
+        var targetElement;
+        console.log("State received: " + state + "!");
+        cleanAll();
+        if (state >= 0 && state <= 3) {
+          targetElement = domElementsMap[state];
+        } else {
+          targetElement = document.querySelector(".stop");
+        }
+        targetElement.classList.add("active");
+      });
+
+      socket.on('authorizationState', function(authorized){
+        var targetElement = document.querySelector(".authorize");
+        targetElement.classList.remove("active")
+        if (authorized) {
+          targetElement.classList.add("active");
+        }
+      });
+
+
+    </script>
+  </body>
+</html>

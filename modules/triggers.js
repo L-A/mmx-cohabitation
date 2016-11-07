@@ -5,6 +5,8 @@ var chalk = require('chalk');
 var currentMeasurement, currentMatchedState = 0, latestMatchedState;
 var sendState;
 
+var stateToConfirm = -1;
+
 var interruptStateChange = false;
 
 exports.registerStateSender = function(senderCallback) {
@@ -18,7 +20,13 @@ exports.receiveMeasurement = function(measurement) {
   //console.log("Distance mesurée: " + measurement + "cm");
 
   if(currentMatchedState.stateValue != latestMatchedState.stateValue) {
-    switchToState(latestMatchedState);
+    stateToConfirm = latestMatchedState;
+    setTimeout(function() {
+      if(latestMatchedState == stateToConfirm) {
+        switchToState(stateToConfirm);
+        stateToConfirm = -1;
+      }
+    }, 600)
   }
 }
 

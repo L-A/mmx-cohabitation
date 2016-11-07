@@ -5,14 +5,14 @@ global.appRoot = path.resolve(__dirname);
 // ✓ In Trigger: A "Match measurement with state" method
 // ✓ In Server: A public "Set state" update sent to the client
 
-var sonar = require ("./modules/sonar");
 var server = require ("./modules/server");
 var helpers = require ("./modules/helpers");
 var stateController = require ("./modules/triggers");
 
 var currentState = -1; // -1 is just "Don't show anything"
 
-sonar.registerReceiver(stateController.receiveMeasurement);
-stateController.registerStateSender(server.sendState);
+// var sonar = require ("./modules/sonar");
+// sonar.startBoard();
+// sonar.registerReceiver(stateController.receiveMeasurement);
 
-sonar.startBoard();
+stateController.registerStateSender(server.askForState);
